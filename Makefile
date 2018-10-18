@@ -1,9 +1,25 @@
 include .env
 
+DOCKER_IMAGE_NAME=node
+DOCKER_IMAGE_VERSION=9-alpine
+
+START_CMD_GRAPHQL="cd /${APP_DIR}/${APP_DIR_GRAPHQL} && yarn &&"
+START_CMD_APOLLO="cd /${APP_DIR}/${APP_DIR_APOLLO} && yarn &&"
+
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
+start: ## Start
+	$(info --> start)
+	@make start-pg
+	@make start-app
+
+stop: ## Stop
+	$(info --> stop)
+	@make stop-pg
+	@make stop-app
 
 start-pg: ## Start postgreSQL
 	$(info --> Start postgreSQL)
@@ -20,11 +36,8 @@ stop-pg: ## Stop postgreSQL
 	$(info --> Stop postgreSQL)
 	@docker stop ${APP_NAME}-pgsql
 
-start: ## Run container: default dev
+start-app: ## Run container: default dev
 	$(info --> Run containers: ${NODE_ENV})
-	@if [ ! "$(docker ps -q -f name=${APP_NAME}-pgsql)" ]; then \
-		@make start-pg \
-	fi
 	@docker run \
 		--rm \
 		--detach \
@@ -40,11 +53,11 @@ start: ## Run container: default dev
 		${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} \
 		sh -c "${START_CMD_GRAPHQL} && ${START_CMD_APOLLO}"
 
-stop: ## Stop containers
+stop-app: ## Stop containers
 	$(info --> Stop container)
 	@docker stop ${APP_NAME}-node
 
-destroy: ## Stop and remove containers
+destroy-app: ## Stop and remove containers
 	$(info --> Stop and remove a running container)
 	@docker rm --force --volumes ${APP_NAME}-node
 
@@ -99,7 +112,6 @@ endif
 
 run: ## Run command inside this projet
 	$(info --> Run command inside this projet)
-	@[ "$(docker ps -a | grep "${APP_NAME}-pgsql")" ] && echo 'here'
 	@docker run \
 		--rm \
 		--tty \
