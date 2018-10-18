@@ -1,31 +1,38 @@
-APP_NAME?=graphsl-vs-apollo
-APP_DIR?=graphql-vs-apollo
-APP_DIR_GRAPHQL?=GRAPHQL
-APP_DIR_APOLLO?=APOLLO
-DOCKER_IMAGE_NAME?=node
-DOCKER_IMAGE_VERSION?=9-alpine
-PORT_EXPOSE_GRAPHQL?=4441
-PORT_DOCKER_GRAPHQL?=8080
-PORT_EXPOSE_APOLLO?=4442
-PORT_DOCKER_APOLLO?=8080
-NODE_ENV?=development
-START_CMD_GRAPHQL="cd /${APP_DIR}/${APP_DIR_GRAPHQL} && yarn && yarn serve"
-START_CMD_APOLLO="cd /${APP_DIR}/${APP_DIR_APOLLO} && yarn && yarn serve"
+include .env
 
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
 
+start-pg: ## Start postgreSQL
+	$(info --> Start postgreSQL)
+	@docker run \
+		--rm \
+    	--detach \
+		--env-file=./.env \
+    	--name ${APP_NAME}-pgsql \
+		--volume "${CURDIR}/.data:/var/lib/postgresql/data" \
+		--publish ${POSTGRES_PORT}:${POSTGRES_PORT} \
+		postgres:10-alpine
+
+stop-pg: ## Stop postgreSQL
+	$(info --> Stop postgreSQL)
+	@docker stop ${APP_NAME}-pgsql
+
 start: ## Run container: default dev
 	$(info --> Run containers: ${NODE_ENV})
+	@if [ ! "$(docker ps -q -f name=${APP_NAME}-pgsql)" ]; then \
+		@make start-pg \
+	fi
 	@docker run \
 		--rm \
 		--detach \
 		--user node \
-		--name "/${APP_NAME}" \
+		--env-file=./.env \
 		--workdir "/${APP_DIR}" \
-		--env "NODE_ENV=${NODE_ENV}" \
+		--name "${APP_NAME}-node" \
+		--link ${APP_NAME}-pgsql:postgres \
 		--volume "${CURDIR}/${APP_DIR_GRAPHQL}:/${APP_DIR}/${APP_DIR_GRAPHQL}" \
 		--volume "${CURDIR}/${APP_DIR_APOLLO}:/${APP_DIR}/${APP_DIR_APOLLO}" \
 		--publish ${PORT_EXPOSE_GRAPHQL}:${PORT_DOCKER_GRAPHQL} \
@@ -35,19 +42,19 @@ start: ## Run container: default dev
 
 stop: ## Stop containers
 	$(info --> Stop container)
-	@docker stop ${APP_NAME}
+	@docker stop ${APP_NAME}-node
 
 destroy: ## Stop and remove containers
 	$(info --> Stop and remove a running container)
-	@docker rm --force --volumes ${APP_NAME}
+	@docker rm --force --volumes ${APP_NAME}-node
 
 logs: ## Display logs
 	$(info --> Display log)
-	@docker logs --follow ${APP_NAME}
+	@docker logs --follow ${APP_NAME}-node
 
 sh: ## Run bash inside container
 	$(info --> Run bash inside the container app)
-	@docker exec --interactive --tty ${APP_NAME} sh
+	@docker exec --interactive --tty ${APP_NAME}-node sh
 
 ifeq (npm,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -56,7 +63,7 @@ endif
 
 npm: ## Run npm inside container
 	$(info --> Run npm inside the container app)
-	@docker exec ${APP_NAME} npm $(RUN_ARGS)
+	@docker exec ${APP_NAME}-node npm $(RUN_ARGS)
 
 ifeq (yarn,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -65,7 +72,7 @@ endif
 
 yarn: ## Run yarn inside container
 	$(info --> Run npm inside the container app)
-	@docker exec ${APP_NAME} yarn $(RUN_ARGS)
+	@docker exec ${APP_NAME}-node yarn $(RUN_ARGS)
 
 ifeq (exec,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -74,7 +81,7 @@ endif
 
 exec: ## Execute command inside container
 	$(info --> Execute command inside container)
-	@docker exec ${APP_NAME} sh -c "$(RUN_ARGS)"
+	@docker exec ${APP_NAME}-node sh -c "$(RUN_ARGS)"
 
 ifeq (interact,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -83,7 +90,7 @@ endif
 
 interact: ## Execute interactive command inside container
 	$(info --> Execute interactive command inside container)
-	@docker exec --interactive --tty ${APP_NAME} sh -c "$(RUN_ARGS)"
+	@docker exec --interactive --tty ${APP_NAME}-node sh -c "$(RUN_ARGS)"
 
 ifeq (run,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -92,14 +99,16 @@ endif
 
 run: ## Run command inside this projet
 	$(info --> Run command inside this projet)
+	@[ "$(docker ps -a | grep "${APP_NAME}-pgsql")" ] && echo 'here'
 	@docker run \
 		--rm \
 		--tty \
 		--user node \
 		--interactive \
-		--name ${APP_NAME} \
+		--env-file=./.env \
 		--workdir "/${APP_DIR}" \
-		--env "NODE_ENV=${NODE_ENV}" \
+		--name "${APP_NAME}-node" \
+		--link ${APP_NAME}-pgsql:postgres \
 		--volume "${CURDIR}/${APP_DIR_GRAPHQL}:/${APP_DIR}/${APP_DIR_GRAPHQL}" \
 		--volume "${CURDIR}/${APP_DIR_APOLLO}:/${APP_DIR}/${APP_DIR_APOLLO}" \
 		--publish ${PORT_EXPOSE_GRAPHQL}:${PORT_DOCKER_GRAPHQL} \
