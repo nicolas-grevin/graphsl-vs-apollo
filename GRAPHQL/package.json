@@ -1,0 +1,10 @@
+{
+  "name": "graphql-vs-apollo_graphql",
+  "version": "1.0.0",
+  "description": "This project is a test for writing an article graphql native vs apollo",
+  "main": "server.js",
+  "repository": "https://github.com/nicolas-grevin/graphsl-vs-apollo",
+  "author": "nicolas-grevin <developer@nicolas-grevin.com>",
+  "license": "MIT",
+  "private": false
+}
