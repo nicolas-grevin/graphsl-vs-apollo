@@ -10,7 +10,7 @@ module.exports = {
   development: {
     username: pg_user,
     password: pg_pass,
-    database: pg_db,
+    database: `${pg_db}-graphql-dev`,
     host: pg_host,
     port: pg_port,
     dialect: 'postgres'
@@ -18,7 +18,7 @@ module.exports = {
   test: {
     username: pg_user,
     password: pg_pass,
-    database: pg_db,
+    database: `${pg_db}-graphql-test`,
     host: pg_host,
     port: pg_port,
     dialect: 'postgres'
@@ -26,7 +26,7 @@ module.exports = {
   production: {
     username: pg_user,
     password: pg_pass,
-    database: pg_db,
+    database: `${pg_db}-graphql-prod`,
     host: pg_host,
     port: pg_port,
     dialect: 'postgres'

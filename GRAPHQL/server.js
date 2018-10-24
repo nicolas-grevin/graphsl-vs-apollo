@@ -11,7 +11,7 @@ models.sequelize.sync()
     .then(() => {
         app.listen(4441, () => {
             // eslint-disable-next-line no-console
-            console.log('Go to http://localhost:4000/graphiql to run queries!');
+            console.log('Go to http://localhost:4441/graphiql to run queries!');
         });
     })
     .catch((e) => {

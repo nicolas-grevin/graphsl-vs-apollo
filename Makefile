@@ -3,9 +3,6 @@ include .env
 DOCKER_IMAGE_NAME=node
 DOCKER_IMAGE_VERSION=9-alpine
 
-START_CMD_GRAPHQL="cd /${APP_DIR}/${APP_DIR_GRAPHQL} && yarn &&"
-START_CMD_APOLLO="cd /${APP_DIR}/${APP_DIR_APOLLO} && yarn &&"
-
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -51,7 +48,7 @@ start-app: ## Run container: default dev
 		--publish ${PORT_EXPOSE_GRAPHQL}:${PORT_DOCKER_GRAPHQL} \
 		--publish ${PORT_EXPOSE_APOLLO}:${PORT_DOCKER_APOLLO} \
 		${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} \
-		sh -c "${START_CMD_GRAPHQL} && ${START_CMD_APOLLO}"
+		sh -c "cd /${APP_DIR}/${APP_DIR_GRAPHQL} && yarn install && yarn start"
 
 stop-app: ## Stop containers
 	$(info --> Stop container)
