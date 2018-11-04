@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/graphql', GraphHTTP(request => ({
     schema,
-    context: { user: request.user },
+    context: { data: request },
     pretty: true,
     graphiql: true,
 })));

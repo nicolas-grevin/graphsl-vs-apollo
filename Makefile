@@ -26,6 +26,7 @@ start-pg: ## Start postgreSQL
 		--env-file=./.env \
     	--name ${APP_NAME}-pgsql \
 		--volume "${CURDIR}/.data:/var/lib/postgresql/data" \
+		--volume "${CURDIR}/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh" \
 		--publish ${POSTGRES_PORT}:${POSTGRES_PORT} \
 		postgres:10-alpine
 
