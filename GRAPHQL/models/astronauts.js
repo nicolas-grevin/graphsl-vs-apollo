@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Astronaut = sequelize.define('Astronaut', {
+  const Astronauts = sequelize.define('astronauts', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -10,17 +10,22 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstname: {
       type: DataTypes.STRING,
+      required: true,
     },
     lastname: {
       type: DataTypes.STRING,
+      required: true,
     },
     email: {
       type: DataTypes.STRING,
+      required: true,
     },
     planet_id: {
       type: DataTypes.UUID
     }
   }, {
+    underscored: true,
+
     getterMethods: {
 
     },
@@ -29,8 +34,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 
-  Astronaut.associate = models => {
-    Astronaut.belongsTo(models.Planet, { as: 'planet' })
+  Astronauts.associate = models => {
+    Astronauts.belongsTo(models.planets, {
+      foreignKey: 'planet_id'
+    })
   };
-  return Astronaut;
+  return Astronauts;
 };

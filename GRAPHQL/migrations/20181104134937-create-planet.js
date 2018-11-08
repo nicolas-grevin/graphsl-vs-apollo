@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Planets', {
+    return queryInterface.createTable('planets', {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -10,7 +10,8 @@ module.exports = {
         autoIncrement: false,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        required: true,
       },
       createdAt: {
         allowNull: false,
@@ -22,7 +23,8 @@ module.exports = {
       }
     });
   },
+
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Planets');
+    return queryInterface.dropTable('planets', {});
   }
 };

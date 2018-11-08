@@ -25,7 +25,7 @@ export const createAstronaut = {
         updatedAt: new Date(),
       })
       .save()
-      .then(astronaut => models.Astronaut.findById(astronaut.id))
+      .then(astronaut => models.astronauts.findById(astronaut.id))
       .catch(err => console.error(err));
   },
 };
@@ -41,7 +41,7 @@ export const updateAstronaut = {
     }
   },
   resolve(source, args) {
-    return models.Astronaut.findById(args.id)
+    return models.astronauts.findById(args.id)
       .then(astronaut => {
         args.astronaut.updatedAt = new Date();
         astronaut.changed('updatedAt', true);
@@ -61,7 +61,7 @@ export const deleteAstronaut = {
     },
   },
   resolve(source, args) {
-    return models.Astronaut.findById(args.id)
+    return models.astronauts.findById(args.id)
       .then(astronaut => {
         astronaut.destroy()
           .then(() => true)

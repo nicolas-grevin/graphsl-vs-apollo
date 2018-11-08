@@ -16,7 +16,7 @@ export const getPlanet = {
     },
   },
   resolve(root, args) {
-    return models.Planet.findById(args.id);
+    return models.planets.findById(args.id);
   },
 };
 
@@ -34,7 +34,7 @@ export const getPlanets = {
   resolve(root, args) {
     const offset = args.offset || 0;
     const limit = args.first || 10;
-    return models.Planet.findAll({ where: args, offset, limit });
+    return models.planets.findAll({ where: args, offset, limit, include: [{ model: models.astronauts }] });
   },
 };
 

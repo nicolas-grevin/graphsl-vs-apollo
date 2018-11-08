@@ -24,7 +24,7 @@ export const createPlanet = {
         updatedAt: new Date(),
       })
       .save()
-      .then(planet => models.Planet.findById(planet.id))
+      .then(planet => models.planets.findById(planet.id))
       .catch(err => console.error(err));
   },
 };
@@ -40,7 +40,7 @@ export const updatePlanet = {
     }
   },
   resolve(source, args) {
-    return models.Planet.findById(args.id)
+    return models.planets.findById(args.id)
       .then(planet => {
         args.planet.updatedAt = new Date();
         planet.changed('updatedAt', true);
@@ -60,7 +60,7 @@ export const deletePlanet = {
     },
   },
   resolve(source, args) {
-    return models.Planet.findById(args.id)
+    return models.planets.findById(args.id)
       .then(planet => {
         planet.destroy()
           .then(() => true)
@@ -81,7 +81,7 @@ export const addAstronaut = {
     }
   },
   resolve(source, args) {
-    return models.Astronaut.findById(args.astronaut.id)
+    return models.astronauts.findById(args.astronaut.id)
       .then(astronaut => {
         args.astronaut.updatedAt = new Date();
         astronaut.changed('updatedAt', true);
@@ -89,7 +89,7 @@ export const addAstronaut = {
         astronaut.changed('planet_id', true);
         return astronaut.update(args.astronaut)
           .then(() => {
-            return models.PLanet.findById(args.planet.id)
+            return models.planets.findById(args.planet.id)
           })
           .catch(err => console.error(err))
       })
