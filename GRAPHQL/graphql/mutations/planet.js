@@ -17,7 +17,7 @@ export const createPlanet = {
     },
   },
   resolve(source, args) {
-    return models.Planet
+    return models.planets
       .build({
         name: args.planet.name,
         createdAt: new Date(),
