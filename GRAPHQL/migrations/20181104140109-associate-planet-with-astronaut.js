@@ -2,14 +2,18 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn(
-      'astronauts',
+    return queryInterface.addColumn({
+        tableName: 'astronauts',
+        schema: 'app'
+      },
       'planet_id',
       {
         type: Sequelize.UUID,
         allowNull: true,
         references: {
-          model: 'planets', key: 'id'
+          model: {
+            tableName: 'planets', schema: 'app', key: 'id'
+          }
         }
       }
     )
@@ -17,9 +21,14 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeColumn(
-      'astronauts',
+      {
+        tableName: 'astronauts',
+        schema: 'app',
+      },
       'planet_id',
-      {}
+      {
+        schema: 'app'
+      }
     )
   }
 };

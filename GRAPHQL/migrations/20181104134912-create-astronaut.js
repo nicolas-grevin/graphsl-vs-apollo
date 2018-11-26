@@ -29,10 +29,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    }, {
+      schema: 'app'
     });
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('astronauts', {});
+    return queryInterface.dropTable('astronauts',{ schema: 'app' });
   }
 };

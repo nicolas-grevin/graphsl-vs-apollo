@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID
     }
   }, {
+    schema: 'app',
     underscored: true,
 
     getterMethods: {

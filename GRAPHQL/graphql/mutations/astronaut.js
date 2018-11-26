@@ -16,7 +16,7 @@ export const createAstronaut = {
     },
   },
   resolve(source, args) {
-    return models.Astronaut
+    return models.astronauts
       .build({
         firstname: args.astronaut.firstname,
         lastname: args.astronaut.lastname,
