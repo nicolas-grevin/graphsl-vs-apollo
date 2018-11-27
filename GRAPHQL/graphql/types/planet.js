@@ -30,7 +30,7 @@ export default new GraphQLObjectType({
         type: new GraphQLList(AstronautType),
         description: "planet's astronauts",
         resolve(planet) {
-          return [];
+          return planet.astronauts;
         }
       },
       createdAt: {

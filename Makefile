@@ -25,10 +25,23 @@ start-pg: ## Start postgreSQL
     	--detach \
 		--env-file=./.env \
     	--name ${APP_NAME}-pgsql \
-		--volume "${CURDIR}/.data:/var/lib/postgresql/data" \
-		--volume "${CURDIR}/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh" \
+		--volume "${CURDIR}/.data/pgsql:/var/lib/postgresql/data" \
+		--volume "${CURDIR}/init-pgsql.sh:/docker-entrypoint-initdb.d/init-pgsql.sh" \
 		--publish ${POSTGRES_PORT}:${POSTGRES_PORT} \
 		postgres:10-alpine
+
+start-mongo: ## Start mongo
+	$(info --> Start mongo)
+	@docker run \
+		--rm
+		--detach \
+		--env-file=./.env
+		--name ${APP_NAME}-mongo \
+		--volume "${CURDIR}/.data/mongodb:/var/lib/postgresql/data" \
+		--volume "${CURDIR}/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js" \
+		--publish ${MONGO_PORT}:${MONGO_PORT} \
+		mongo:4-latest
+
 
 stop-pg: ## Stop postgreSQL
 	$(info --> Stop postgreSQL)
