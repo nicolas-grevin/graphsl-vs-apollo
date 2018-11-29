@@ -1,6 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import GraphHTTP from 'express-graphql';
+import morgan from 'morgan'
+
+import logger from './core/logger';
 
 import schema from './graphql';
 import models from './models';
@@ -21,6 +24,7 @@ models.sequelize
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan("dev", { "stream": logger.stream }));
 
 app.use('/graphql', GraphHTTP(request => ({
   schema,

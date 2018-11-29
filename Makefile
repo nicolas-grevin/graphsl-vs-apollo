@@ -11,11 +11,13 @@ help: ## This help.
 start: ## Start
 	$(info --> start)
 	@make start-pg
+	@make start-mongo
 	@make start-app
 
 stop: ## Stop
 	$(info --> stop)
 	@make stop-pg
+	@make-stop-mongo
 	@make stop-app
 
 start-pg: ## Start postgreSQL
