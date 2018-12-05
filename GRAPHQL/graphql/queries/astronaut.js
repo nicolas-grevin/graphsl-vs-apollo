@@ -5,22 +5,20 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
-import models from '../../models/index';
-import AstronautType from '../types/astronaut';
+import models from '../../postgres/models';
+import { AstronautType } from '../types';
 
-export const getAstronaut = {
+const getAstronaut = {
   type: AstronautType,
   args: {
     id: {
       type: new GraphQLNonNull(GraphQLID),
     },
   },
-  resolve(root, args) {
-    return models.astronauts.findById(args.id);
-  },
+  resolve: async (root, args) => await models.astronauts.findById(args.id),
 };
 
-export const getAstronauts = {
+const getAstronauts = {
   type: new GraphQLList(AstronautType),
   args: {
     first: {
@@ -31,14 +29,19 @@ export const getAstronauts = {
       type: GraphQLInt,
     },
   },
-  resolve(root, args) {
+  resolve: async (root, args) => {
     const offset = args.offset || 0;
     const limit = args.first || 10;
-    return models.astronauts.findAll({ where: args, offset, limit, include: [{ model: models.planets }] });
+    return  await models.astronauts.findAll({
+      where: args,
+      offset,
+      limit,
+      include: [{ model: models.planets }]
+    });
   },
 };
 
-export default {
+export {
   getAstronaut,
   getAstronauts,
 };

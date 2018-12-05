@@ -4,33 +4,31 @@ import {
 } from 'graphql';
 
 
-import models from '../../models/index';
-import AstronautType from '../types/astronaut';
-import AstronautInput from '../inputs/astronaut';
+import models from '../../postgres/models';
+import { AstronautType } from '../types';
+import { AstronautInput } from '../inputs';
 
-export const createAstronaut = {
+const createAstronaut = {
   type: AstronautType,
   args: {
     astronaut: {
       type: AstronautInput,
     },
   },
-  resolve(source, args) {
-    return models.astronauts
-      .build({
-        firstname: args.astronaut.firstname,
-        lastname: args.astronaut.lastname,
-        email: args.astronaut.email,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
-      .save()
-      .then(astronaut => models.astronauts.findById(astronaut.id))
-      .catch(err => console.error(err));
-  },
+  resolve: async (source, args) => await models.astronauts
+    .build({
+      firstname: args.astronaut.firstname,
+      lastname: args.astronaut.lastname,
+      email: args.astronaut.email,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .save()
+    .then(astronaut => models.astronauts.findById(astronaut.id))
+    .catch(err => console.error(err)),
 };
 
-export const updateAstronaut = {
+const updateAstronaut = {
   type: AstronautType,
   args: {
     id: {
@@ -40,38 +38,34 @@ export const updateAstronaut = {
       type: AstronautInput,
     }
   },
-  resolve(source, args) {
-    return models.astronauts.findById(args.id)
-      .then(astronaut => {
-        args.astronaut.updatedAt = new Date();
-        astronaut.changed('updatedAt', true);
-        return astronaut.update(args.astronaut)
-          .then(astronaut => astronaut)
-          .catch(err => console.error(err));
-      })
-      .catch(err => console.error(err));
-  }
+  resolve: async (source, args) => await models.astronauts.findById(args.id)
+    .then(astronaut => {
+      args.astronaut.updatedAt = new Date();
+      astronaut.changed('updatedAt', true);
+      return astronaut.update(args.astronaut)
+        .then(astronaut => astronaut)
+        .catch(err => console.error(err));
+    })
+    .catch(err => console.error(err)),
 };
 
-export const deleteAstronaut = {
+const deleteAstronaut = {
   type: AstronautType,
   args: {
     id: {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  resolve(source, args) {
-    return models.astronauts.findById(args.id)
-      .then(astronaut => {
-        astronaut.destroy()
-          .then(() => true)
-          .catch(err => console.error(err));
-      })
-      .catch(err => console.log(err));
-  }
+  resolve: async (source, args) => await models.astronauts.findById(args.id)
+    .then(astronaut => {
+      astronaut.destroy()
+        .then(() => true)
+        .catch(err => console.error(err));
+    })
+    .catch(err => console.log(err)),
 };
 
-export default {
+export {
   createAstronaut,
   updateAstronaut,
   deleteAstronaut,

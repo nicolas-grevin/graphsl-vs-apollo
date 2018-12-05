@@ -3,10 +3,12 @@ include .env
 DOCKER_IMAGE_NAME=node
 DOCKER_IMAGE_VERSION=9-alpine
 
+
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
 
 start: ## Start
 	$(info --> start)
@@ -17,7 +19,7 @@ start: ## Start
 stop: ## Stop
 	$(info --> stop)
 	@make stop-pg
-	@make-stop-mongo
+	@make stop-mongo
 	@make stop-app
 
 start-pg: ## Start postgreSQL
@@ -27,8 +29,8 @@ start-pg: ## Start postgreSQL
     	--detach \
 		--env-file=./.env \
     	--name ${APP_NAME}-pgsql \
-		--volume "${CURDIR}/.data/pgsql:/var/lib/postgresql/data" \
-		--volume "${CURDIR}/init-pgsql.sh:/docker-entrypoint-initdb.d/init-pgsql.sh" \
+		--volume "${CURDIR}/.data/pgsql:/var/lib/postgresql/data:rw" \
+		--volume "${CURDIR}/init-pgsql.sh:/docker-entrypoint-initdb.d/init-pgsql.sh:rw" \
 		--publish ${POSTGRES_PORT}:${POSTGRES_PORT} \
 		postgres:10-alpine
 
@@ -43,9 +45,9 @@ start-mongo: ## Start mongo
 		--detach \
 		--env-file=./.env \
 		--name ${APP_NAME}-mongo \
-		--volume "${CURDIR}/.data/mongodb:/data/db" \
-		--volume "${CURDIR}/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh" \
-		--publish 27018:${MONGO_PORT} \
+		--volume "${CURDIR}/.data/mongodb:/data/db:rw" \
+		--volume "${CURDIR}/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:rw" \
+		--publish ${MONGO_PORT}:${MONGO_PORT} \
 		mongo:4
 
 stop-mongo: ## Stop mongo
@@ -62,8 +64,9 @@ start-app: ## Run container: default dev
 		--workdir "/${APP_DIR}" \
 		--name "${APP_NAME}-node" \
 		--link ${APP_NAME}-pgsql:postgres \
-		--volume "${CURDIR}/${APP_DIR_GRAPHQL}:/${APP_DIR}/${APP_DIR_GRAPHQL}" \
-		--volume "${CURDIR}/${APP_DIR_APOLLO}:/${APP_DIR}/${APP_DIR_APOLLO}" \
+		--link ${APP_NAME}-mongo:mongo \
+		--volume "${CURDIR}/${APP_DIR_GRAPHQL}:/${APP_DIR}/${APP_DIR_GRAPHQL}:rw" \
+		--volume "${CURDIR}/${APP_DIR_APOLLO}:/${APP_DIR}/${APP_DIR_APOLLO}:rw" \
 		--publish ${PORT_EXPOSE_GRAPHQL}:${PORT_DOCKER_GRAPHQL} \
 		--publish ${PORT_EXPOSE_APOLLO}:${PORT_DOCKER_APOLLO} \
 		${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} \

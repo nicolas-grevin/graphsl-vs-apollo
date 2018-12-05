@@ -10,6 +10,14 @@ const RewardsSchema = Schema({
     required: true,
     default: 0,
   },
+  astronauts: {
+    type: Array,
+    required: false,
+  },
+  planets: {
+    type: Array,
+    required: false,
+  },
 },{
   timestamp: {
     createdAt: 'created_at',
@@ -17,7 +25,6 @@ const RewardsSchema = Schema({
   }
 });
 
-const RewardsModel = model('rewards', RewardsSchema);
+const RewardsModel = model('Rewards', RewardsSchema);
 
 export default RewardsModel;
-

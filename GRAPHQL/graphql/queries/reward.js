@@ -5,23 +5,21 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
-import models from '../../models/index';
-import PlanetType from '../types/planet';
+import { Rewards } from '../../mongo/models';
+import { RewardType } from '../types';
 
-export const getPlanet = {
-  type: PlanetType,
+const getReward = {
+  type: RewardType,
   args: {
     id: {
       type: new GraphQLNonNull(GraphQLID),
     },
   },
-  resolve(root, args) {
-    return models.planets.findById(args.id);
-  },
+  resolve: async (root, args) => await Rewards.find({ id: args.id }),
 };
 
-export const getPlanets = {
-  type: new GraphQLList(PlanetType),
+const getRewards = {
+  type: new GraphQLList(RewardType),
   args: {
     first: {
       type: GraphQLInt,
@@ -31,14 +29,14 @@ export const getPlanets = {
       type: GraphQLInt,
     },
   },
-  resolve(root, args) {
+  resolve: async (root, args) => {
     const offset = args.offset || 0;
     const limit = args.first || 10;
-    return models.planets.findAll({ where: args, offset, limit, include: [{ model: models.astronauts }] });
+    return await Rewards.find().skip(offset).limit(limit);
   },
 };
 
-export default {
-  getPlanet,
-  getPlanets,
+export {
+  getReward,
+  getRewards,
 };

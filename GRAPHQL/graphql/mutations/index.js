@@ -1,5 +1,6 @@
 import { createAstronaut, updateAstronaut, deleteAstronaut } from './astronaut';
 import { createPlanet, updatePlanet, deletePlanet } from './planet';
+import { createReward, deleteReward } from './reward';
 
 export default {
   createAstronaut,
@@ -7,5 +8,7 @@ export default {
   deleteAstronaut,
   createPlanet,
   updatePlanet,
-  deletePlanet
+  deletePlanet,
+  createReward,
+  deleteReward,
 };

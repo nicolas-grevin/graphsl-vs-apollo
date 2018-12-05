@@ -1,5 +1,5 @@
 config/config.js
-migrations/
+postgres/migrations/
 models/index.js
 node_modules/
-seeders/
+postgres/seeders/

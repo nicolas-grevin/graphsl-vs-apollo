@@ -9,9 +9,11 @@ mongo --username ${MONGO_INITDB_ROOT_USERNAME} --password ${MONGO_INITDB_ROOT_PA
         user: '${MONGO_GRAPHQL_USER}',
         pwd: '${MONGO_GRAPHQL_PASSWORD}',
         roles: [
-            { role: 'userAdmin', db: '${MONGO_GRAPHQL_DATABASE}' }
+            { role: 'readWrite', db: '${MONGO_GRAPHQL_DATABASE}' },
         ]
     });
+
+    db.admin.insert({ "init": "true" });
 
     use ${MONGO_APOLLO_DATABASE};
 
@@ -19,7 +21,10 @@ mongo --username ${MONGO_INITDB_ROOT_USERNAME} --password ${MONGO_INITDB_ROOT_PA
         user: '${MONGO_APOLLO_USER}',
         pwd: '${MONGO_APOLLO_PASSWORD}',
         roles: [
-            { role: 'userAdmin', db: '${MONGO_APOLLO_DATABASE}' }
+            { role: 'readWrite', db: '${MONGO_APOLLO_DATABASE}' },
         ]
     });
+
+
+    db.admin.insert({ "init": "true" });
 EOF
