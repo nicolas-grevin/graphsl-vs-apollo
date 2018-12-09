@@ -1,5 +1,5 @@
 {
-  "name": "graphql-vs-apollo_apollo",
+  "name": "graphql-vs-apollo_graphql_server",
   "version": "1.0.0",
   "description": "This project is a test for writing an article graphql native vs apollo",
   "main": "server.js",
@@ -17,23 +17,25 @@
     "clean:dependencies": "rm -rf node_modules && rm yarn.lock && yarn cache clean"
   },
   "dependencies": {
-    "apollo-server-express": "^2.2.6",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "express-graphql": "^0.6.12",
     "fs": "^0.0.1-security",
     "graphql": "^14.0.2",
     "mongoose": "^5.3.14",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.18.4",
     "path": "^0.12.7",
-    "pg": "^7.7.1",
+    "pg": "^7.5.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.41.2",
-    "sequelize-cli": "^5.4.0"
+    "sequelize": "^4.40.0",
+    "sequelize-cli": "^5.1.0"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
+    "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",

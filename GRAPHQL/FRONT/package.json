@@ -1,0 +1,68 @@
+{
+  "name": "graphql-vs-apollo_graphql_front",
+  "version": "0.1.0",
+  "description": "This project is a test for writing an article graphql native vs apollo",
+  "repository": "https://github.com/nicolas-grevin/graphsl-vs-apollo",
+  "author": "nicolas-grevin <developer@nicolas-grevin.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "yarn lint:js && yarn lint:scss",
+    "lint:js": "vue-cli-service lint --no-fix",
+    "lint:scss": "stylelint '**/*.vue' --syntax scss",
+    "test": "yarn test:unit && yarn test:e2e",
+    "test:unit": "vue-cli-service test:unit",
+    "test:e2e": "vue-cli-service test:e2e"
+  },
+  "dependencies": {
+    "graphql": "^14.0.2",
+    "process": "^0.11.10",
+    "vue": "^2.5.17",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.0.1",
+    "vuejs-paginate": "^2.1.0",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-e2e-cypress": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/cli-plugin-unit-mocha": "^3.0.1",
+    "@vue/cli-service": "^3.0.1",
+    "@vue/eslint-config-standard": "^3.0.1",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "chai": "^4.1.2",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.0.1",
+    "stylelint": "^9.5.0",
+    "stylelint-config-standard": "^18.2.0",
+    "stylelint-processor-html": "^1.0.0",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/standard"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

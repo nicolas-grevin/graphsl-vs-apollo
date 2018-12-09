@@ -1,0 +1,5 @@
+config/config.js
+postgres/migrations/
+models/index.js
+node_modules/
+postgres/seeders/
