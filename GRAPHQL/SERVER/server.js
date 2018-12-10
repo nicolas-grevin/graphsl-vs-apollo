@@ -20,6 +20,8 @@ async function run() {
       next();
   });
 
+  console.log('test -change');
+
   app.use('/graphql', GraphHTTP(request => ({
     schema,
     context: { data: request },

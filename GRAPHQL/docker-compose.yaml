@@ -11,14 +11,14 @@ services:
       - ${PWD}/FRONT:/app
     working_dir: /app
     ports:
-      - 8080:8080
+      - 8081:8080
     command: sh -c "yarn install && yarn start"
 
   server:
     image: node:10-alpine
     container_name: graphql-vs-apollo_graphql_server
     env_file:
-      - ${PWD}/.env
+      - ${PWD}/SERVER/.env
     user: node
     working_dir: /app
     volumes:
@@ -32,7 +32,7 @@ services:
     container_name: ${POSTGRES_HOST}
     hostname: ${POSTGRES_HOST}
     env_file:
-      - ${PWD}/.env
+      - ${PWD}/SERVER/.env
     volumes:
       - ${PWD}/docker/init-postgres.sh:/docker-entrypoint-initdb.d/init-posgres.sh
     ports:
@@ -43,7 +43,7 @@ services:
     container_name: ${MONGO_HOST}
     hostname: ${MONGO_HOST}
     env_file:
-      - ${PWD}/.env
+      - ${PWD}/SERVER/.env
     volumes:
       - ${PWD}/docker/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
     ports:
