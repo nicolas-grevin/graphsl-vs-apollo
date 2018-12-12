@@ -17,6 +17,9 @@ services:
   server:
     image: node:10-alpine
     container_name: graphql-vs-apollo_graphql_server
+    depends_on:
+      - postgres
+      - mongo
     env_file:
       - ${PWD}/SERVER/.env
     user: node
@@ -38,7 +41,7 @@ services:
     ports:
       - ${POSTGRES_PORT_EXPOSE}:${POSTGRES_PORT_DOCKER}
 
-  mondo:
+  mongo:
     image: mongo:4
     container_name: ${MONGO_HOST}
     hostname: ${MONGO_HOST}

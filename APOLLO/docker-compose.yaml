@@ -25,7 +25,7 @@ services:
     ports:
       - ${POSTGRES_PORT_EXPOSE}:${POSTGRES_PORT_DOCKER}
 
-  mondo:
+  mongo:
     image: mongo:4
     container_name: ${MONGO_HOST}
     hostname: ${MONGO_HOST}
