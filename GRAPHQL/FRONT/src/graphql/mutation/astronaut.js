@@ -26,5 +26,6 @@ export const DELETE_ASTRONAUT = `mutation deleteAstronaut($id: String!) {
 
 export default {
   CREATE_ASTRONAUT,
-  UPDATE_ASTRONAUT
+  UPDATE_ASTRONAUT,
+  DELETE_ASTRONAUT
 }

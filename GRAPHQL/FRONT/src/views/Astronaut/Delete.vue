@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: 'astronautDelete',
+    name: 'AstronautDelete',
     async created() {
       await this.$store.dispatch('FETCH_ASTRONAUT', { id: this.$route.params.id })
       await this.$store.getters.GET_ASTRONAUT

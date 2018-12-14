@@ -1,18 +1,25 @@
-export const GET_PLANETS = `query getPlanets {
+const GET_PLANETS = `query getPlanets {
   getPlanets {
     id
     name
   }
 }`
 
-export const GET_PLANET = `query getPlanet($id: Int!) {
+const GET_PLANET = `query getPlanet($id: Int!) {
   getPlanet(id: $id) {
     id
     name
   }
 }`
 
-export default {
+const COUNT_PLANETS = `
+{
+  countPlanets
+}
+`
+
+export {
   GET_PLANETS,
-  GET_PLANET
+  GET_PLANET,
+  COUNT_PLANETS
 }

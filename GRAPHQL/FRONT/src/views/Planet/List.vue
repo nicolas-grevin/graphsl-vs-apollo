@@ -1,5 +1,7 @@
 <template>
   <div class="planets">
+    <h1>Planets</h1>
+    <router-link :to="{name: 'planetNew' }">New Planet</router-link>
     <Table :items="planets" :keys="planetKeys" />
   </div>
 </template>

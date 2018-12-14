@@ -34,7 +34,7 @@ export const COUNT_ASTRONAUTS = `
 {
   countAstronauts
 }
-`;
+`
 
 export default {
   GET_ASTRONAUTS,

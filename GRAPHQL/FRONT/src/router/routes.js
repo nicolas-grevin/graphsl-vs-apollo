@@ -6,6 +6,9 @@ import AstronautEdit from '@/views/Astronaut/Edit'
 import AstronautDelete from '@/views/Astronaut/Delete'
 import PlanetList from '@/views/Planet/List'
 import PlanetItem from '@/views/Planet/Item'
+import PlanetNew from '@/views/Planet/New'
+import PlanetEdit from '@/views/Planet/Edit'
+import PlanetDelete from '@/views/Planet/Delete'
 
 export default [
   {
@@ -52,8 +55,26 @@ export default [
   },
   {
     path: '/planet/:id',
-    name: 'planetNew',
+    name: 'planetItem',
     component: PlanetItem,
     enableToNav: false
   },
+  {
+    path: '/new-planet',
+    name: 'planetNew',
+    component: PlanetNew,
+    enableToNav: false
+  },
+  {
+    path: '/edit-planet/:id',
+    name: 'planetEdit',
+    component: PlanetEdit,
+    enableToNav: false,
+  },
+  {
+    path: '/delete-planet/:id',
+    name: 'planetDelete',
+    component: PlanetDelete,
+    enableToNav: false
+  }
 ]

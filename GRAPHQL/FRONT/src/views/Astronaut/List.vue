@@ -38,8 +38,7 @@ export default {
   data() {
     return {
       offset: 0,
-      limit: 20,
-      actions: new Action({ name: 'astronautItem', params: { id: '9e10c84b-5efb-487b-8a6d-bc3d9ff6be64' }})
+      limit: 20
     }
   },
   async created() {
