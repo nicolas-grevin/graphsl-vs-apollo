@@ -2,9 +2,7 @@
   <div class="astronauts">
     <h1>astronauts</h1>
     <router-link :to="{name: 'astronautNew' }">New Astronaut</router-link>
-    <!--<div>{{ astronaut }}</div>-->
-    <!--<List :items="astronauts" />-->
-    <Table :items="astronauts" :keys="astronautKeys" route-item="astronautItem" />
+    <Table v-if="astronauts" :items="astronauts" route-item="astronautItem" />
     <div>
       <!--<p>{{ numberPage }}</p>-->
       <!--<p>{{ numberAstronauts }}</p>-->
@@ -27,8 +25,6 @@ import { mapState } from 'vuex'
 import Table from '@/components/Table'
 import Paginate from 'vuejs-paginate'
 
-import Action from '@/components/Table/Action';
-
 export default {
   name: 'AstronautList',
   components: {
@@ -41,13 +37,13 @@ export default {
       limit: 20
     }
   },
-  async created() {
-    await this.$store.dispatch('FETCH_ASTRONAUTS', { offset: this.$data.offset, limit: this.$data.limit })
-    await this.$store.getters.GET_ASTRONAUTS
-    await this.$store.getters.GET_ASTRONAUT_KEYS
+  created() {
+    this.$store.dispatch('astronauts/fetchAstronauts', { offset: this.$data.offset, limit: this.$data.limit })
   },
   computed: {
-    ...mapState(['astronauts', 'astronautKeys'])
+    ...mapState({
+      astronauts: state => state.astronauts.astronauts
+    })
   }
 }
 </script>
