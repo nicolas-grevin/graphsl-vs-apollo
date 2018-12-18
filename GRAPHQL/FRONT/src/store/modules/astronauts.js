@@ -3,13 +3,12 @@ import Vue from 'vue'
 import { GET_ASTRONAUTS, GET_ASTRONAUT, COUNT_ASTRONAUTS } from '../../graphql/query/astronaut'
 import { CREATE_ASTRONAUT, UPDATE_ASTRONAUT, DELETE_ASTRONAUT } from '../../graphql/mutation/astronaut'
 
-import Action from '../../components/Table/Action'
-
 const GRAPHQL_URL = process.env.VUE_APP_GRAPHQL_URL;
 
 const state = {
   astronauts: [],
-  astronaut: {}
+  astronaut: {},
+  numberAstronauts : 0
 }
 
 const getters = {
@@ -18,6 +17,9 @@ const getters = {
   },
   getAstronaut: ({ astronaut }) => {
     return astronaut
+  },
+  getNumberAstronauts: ({ numberAstronauts }) => {
+    return numberAstronauts
   }
 }
 
@@ -36,6 +38,9 @@ const mutations = {
   },
   REMOVE_ASTRONAUT: (state, astronautId) => {
     state.astronaut = {}
+  },
+  COUNT_ASTRONAUTS: (state, numberAstronauts) => {
+    state.numberAstronauts = numberAstronauts
   }
 }
 
@@ -82,7 +87,7 @@ const actions = {
   },
   countAstronauts: async ({ commit}) => {
     const numberAstronauts = await Vue.http.post(GRAPHQL_URL, JSON.stringify({ query: COUNT_ASTRONAUTS }))
-    commit('UPDATE_NUMBER_ASTRONAUTS', numberAstronauts.body.data.countAstronauts)
+    commit('COUNT_ASTRONAUTS', numberAstronauts.body.data.countAstronauts)
   }
 }
 
