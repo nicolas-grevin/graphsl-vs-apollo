@@ -15,9 +15,7 @@ const getters = {
   getAstronauts: ({ astronauts }) => {
     return astronauts
   },
-  getAstronaut: ({ astronaut }) => {
-    return astronaut
-  },
+  getAstronaut: state => state.astronaut,
   getNumberAstronauts: ({ numberAstronauts }) => {
     return numberAstronauts
   }
@@ -56,14 +54,14 @@ const actions = {
   fetchAstronaut: async ({ commit }, astronautId) => {
     try {
       const astronaut = await Vue.http.post(GRAPHQL_URL, JSON.stringify({ query: GET_ASTRONAUT, variables: { id: astronautId } }))
-      commit('UPDATE_ASTRONAUT', astronaut.body.data.getAstronaut)
+      commit('FETCH_ASTRONAUT', astronaut.body.data.getAstronaut)
     } catch (e) {
       console.error(e)
     }
   },
   createAstronaut: async ({ commit }, astronaut) => {
     try {
-      const astronauCreated = await Vue.http.post(GRAPHQL_URL, JSON.stringify({ query: CREATE_ASTRONAUT, variables: { astronaut } }))
+      const astronauCreated = await Vue.http.post(GRAPHQL_URL, JSON.stringify({ query: CREATE_ASTRONAUT, variables: astronaut }))
       commit('CREATE_ASTRONAUT', astronauCreated.body.data.createAstronaut)
     } catch (e) {
       console.error(e)

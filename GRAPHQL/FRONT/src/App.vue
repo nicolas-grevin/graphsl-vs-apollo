@@ -1,6 +1,9 @@
 <template>
   <div id="app" class="app">
-    <header class="app_header">header</header>
+    <header class="app_header">
+      <h1>Graphql vs Apollo</h1>
+      <h2>Graphql</h2>
+    </header>
     <nav class="app_nav">
       <Nav v-bind:routes="routes" />
     </nav>

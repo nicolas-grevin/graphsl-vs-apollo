@@ -1,5 +1,5 @@
 export const CREATE_ASTRONAUT = `mutation createAstronaut($astronaut: AstronautInput) {
- 	createAstronaut(astronaut: $astronaut) {
+  createAstronaut(astronaut: $astronaut) {
     id
     firstname
     lastname

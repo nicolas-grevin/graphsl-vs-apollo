@@ -1,26 +1,36 @@
 <template>
-  <div>
-    {{astronaut.id}}
-    {{astronaut.firstname}}
-    {{astronaut.lastname}}
-    {{astronaut.email}}
-  </div>
+  <ul>
+    <li><span>id : </span>{{astronaut.id}}</li>
+    <li><span>firstname : </span>{{astronaut.firstname}}</li>
+    <li><span>lastname : </span>{{astronaut.lastname}}</li>
+    <li><span>email : </span>{{astronaut.email}}</li>
+  </ul>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'AstronautItem',
     components: {},
     props: {},
-    async created() {
-      await this.$store.dispatch('FETCH_ASTRONAUT', { id: this.$route.params.id })
-      await this.$store.getters.GET_ASTRONAUT
+    data() {
+      return {
+        astronaut: undefined,
+      }
     },
     computed: {
-      ...mapState(['astronaut'])
-    }
+      ...mapGetters({
+        getAstronaut: 'astronauts/getAstronaut'
+      })
+    },
+    async created() {
+      if (this.getAstronaut === undefined) {
+        // fetch astronaut
+      } else {
+        this.astronaut = this.getAstronaut
+      }
+    },
   }
 </script>
 
